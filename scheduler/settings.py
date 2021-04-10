@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'schedulerZ.apps.SchedulerZachetConfig',
+    'schedulerZstatic.apps.SchedulerzstaticConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
