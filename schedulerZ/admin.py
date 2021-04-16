@@ -11,7 +11,7 @@ class NoteAdmin(admin.ModelAdmin):
     fields = ('date', ('title', 'public'), 'message')
     readonly_fields = ('date', )
     search_fields = ['title', 'message', ]
-    list_filter = ('public', 'important', )
+    list_filter = ('public', 'important', 'status', )
 
     def save_model(self, request, obj, form, change):
         # Добавляем текущего пользователя (если не выбран) при сохранении модели

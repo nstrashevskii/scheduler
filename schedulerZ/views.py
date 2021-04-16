@@ -25,28 +25,6 @@ def paginator_(notes, page_size, page_number):
     return serializer.data
 
 
-def valid_date_data(request, new_note, status_):
-    if 'date' in request.data:
-        user_date = datetime.strptime(request.data['date'], "%Y-%m-%dT%I:%M:%S.%fZ")
-        if user_date >= datetime.now():
-            if new_note.is_valid():
-                new_note.save(author=request.user)
-                return Response(new_note.data, status=status.HTTP_201_CREATED)
-            else:
-                return Response(new_note.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            if new_note.is_valid():
-                raise APIException(f'Введенная дата меньше текущей, формат даты "%Y-%m-%dT%I:%M:%S.%fZ"')
-            else:
-                raise APIException(f'Введенная дата меньше текущей, формат даты "%Y-%m-%dT%I:%M:%S.%fZ"')
-    else:
-        if new_note.is_valid():
-            new_note.save(author=request.user)
-            return Response(new_note.data, status=status_)
-        else:
-            return Response(new_note.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class NoteView(APIView):
     """ все заметки, которые опубликованы """
 
@@ -133,5 +111,7 @@ class NoteEditorView(APIView):
 
     def delete(self, request, note_id):
         note = Notes.objects.filter(pk=note_id, author=request.user)
+        if not note:
+            raise NotFound(f'Заметка с id={note_id} для пользователя {request.user.username} не найдена')
         note.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

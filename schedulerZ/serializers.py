@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Notes
-from datetime import datetime
 from django.contrib.auth.models import User
 
 
